@@ -1028,9 +1028,125 @@
                             <h4>Regional Demand Heatmap</h4>
                             <div id="threejs-container"></div>
                             <div class="visualization-controls">
-                                <button class="viz-btn" onclick="toggleHeatmap('production')">Production</button>
-                                <button class="viz-btn" onclick="toggleHeatmap('demand')">Demand</button>
+                                <button class="viz-btn" onclick="toggleHeatmap('demand')">Demand View</button>
+                                <button class="viz-btn" onclick="toggleHeatmap('production')">Production View</button>
                                 <button class="viz-btn" onclick="toggleHeatmap('growth')">Growth Rate</button>
+                            </div>
+                            
+                            <!-- Summary Statistics Panel -->
+                            <div style="background: rgba(255, 255, 255, 0.05); border-radius: 15px; padding: 20px; margin-top: 20px;">
+                                <h5 style="color: #667eea; margin-bottom: 15px;">Regional Market Summary</h5>
+                                <div class="kpi-grid">
+                                    <div class="kpi-item">
+                                        <div class="kpi-value">14,200</div>
+                                        <div class="kpi-label">Total Demand (tons)</div>
+                                    </div>
+                                    <div class="kpi-item">
+                                        <div class="kpi-value">300</div>
+                                        <div class="kpi-label">Domestic Production</div>
+                                    </div>
+                                    <div class="kpi-item">
+                                        <div class="kpi-value">97.9%</div>
+                                        <div class="kpi-label">Import Dependency</div>
+                                    </div>
+                                    <div class="kpi-item">
+                                        <div class="kpi-value">38.2%</div>
+                                        <div class="kpi-label">Avg Growth Rate</div>
+                                    </div>
+                                </div>
+                                
+                                <div style="margin-top: 15px;">
+                                    <h6 style="color: #e0e0e0; margin-bottom: 10px;">Top 5 Demand Centers:</h6>
+                                    <ol style="margin-left: 20px; color: #b0b0b0; line-height: 1.6;">
+                                        <li>Maharashtra (3,200 tons) - Automotive Hub</li>
+                                        <li>Gujarat (2,800 tons) - Manufacturing Base</li>
+                                        <li>Tamil Nadu (2,600 tons) - Auto & Wind Energy</li>
+                                        <li>Delhi NCR (2,400 tons) - Consumer Market</li>
+                                        <li>Karnataka (2,200 tons) - Tech & Auto Sector</li>
+                                    </ol>
+                                </div>
+                                
+                                <!-- Regional Data Table -->
+                                <div style="margin-top: 20px;">
+                                    <h6 style="color: #e0e0e0; margin-bottom: 10px;">Detailed Regional Analysis</h6>
+                                    <div style="max-height: 300px; overflow-y: auto;">
+                                        <table class="data-table" style="font-size: 12px;">
+                                            <thead>
+                                                <tr>
+                                                    <th>State/Region</th>
+                                                    <th>Demand (tons)</th>
+                                                    <th>Production</th>
+                                                    <th>Growth (%)</th>
+                                                    <th>EV Sales</th>
+                                                    <th>Key Sectors</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Maharashtra</td>
+                                                    <td>3,200</td>
+                                                    <td>150</td>
+                                                    <td style="color: #4caf50;">+38%</td>
+                                                    <td>245,000</td>
+                                                    <td>Automotive, Industrial</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Gujarat</td>
+                                                    <td>2,800</td>
+                                                    <td>50</td>
+                                                    <td style="color: #4caf50;">+42%</td>
+                                                    <td>185,000</td>
+                                                    <td>Manufacturing, Wind</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Tamil Nadu</td>
+                                                    <td>2,600</td>
+                                                    <td>80</td>
+                                                    <td style="color: #4caf50;">+35%</td>
+                                                    <td>210,000</td>
+                                                    <td>Auto, Wind Energy</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Delhi NCR</td>
+                                                    <td>2,400</td>
+                                                    <td>0</td>
+                                                    <td style="color: #ff9800;">+32%</td>
+                                                    <td>195,000</td>
+                                                    <td>Consumer, Services</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Karnataka</td>
+                                                    <td>2,200</td>
+                                                    <td>20</td>
+                                                    <td style="color: #4caf50;">+45%</td>
+                                                    <td>175,000</td>
+                                                    <td>Tech, Automotive</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Haryana</td>
+                                                    <td>1,800</td>
+                                                    <td>0</td>
+                                                    <td style="color: #4caf50;">+48%</td>
+                                                    <td>125,000</td>
+                                                    <td>Auto Components</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Others</td>
+                                                    <td>2,200</td>
+                                                    <td>0</td>
+                                                    <td style="color: #ff9800;">+30%</td>
+                                                    <td>285,000</td>
+                                                    <td>Mixed</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <div class="alert alert-info" style="margin-top: 15px;">
+                                    <span>💡</span>
+                                    <span style="font-size: 12px;">Click on any region in the 3D map to zoom in and explore detailed metrics</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -2646,41 +2762,64 @@
             const container = document.getElementById('threejs-container');
             if (!container) return;
             
-            // Clear previous content
-            container.innerHTML = '';
+            // Clear previous content and add loading indicator
+            container.innerHTML = '<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #667eea;">Loading Regional Data...</div>';
             
             // Scene setup
             scene = new THREE.Scene();
             scene.background = new THREE.Color(0x0a0a0a);
+            scene.fog = new THREE.Fog(0x0a0a0a, 50, 200);
             
             // Camera
             camera = new THREE.PerspectiveCamera(
-                75,
+                60,
                 container.clientWidth / container.clientHeight,
                 0.1,
                 1000
             );
-            camera.position.set(0, 30, 50);
+            camera.position.set(0, 40, 60);
             camera.lookAt(0, 0, 0);
             
             // Renderer
-            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            container.innerHTML = '';
             container.appendChild(renderer.domElement);
             
             // Lights
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
             scene.add(ambientLight);
             
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-            directionalLight.position.set(10, 10, 5);
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
+            directionalLight.position.set(20, 30, 10);
+            directionalLight.castShadow = true;
+            directionalLight.shadow.camera.near = 0.1;
+            directionalLight.shadow.camera.far = 100;
+            directionalLight.shadow.camera.left = -50;
+            directionalLight.shadow.camera.right = 50;
+            directionalLight.shadow.camera.top = 50;
+            directionalLight.shadow.camera.bottom = -50;
             scene.add(directionalLight);
             
-            // Create India map representation (simplified)
-            createIndiaHeatmap();
+            // Add controls
+            addMapControls();
+            
+            // Create India map with regions
+            createDetailedIndiaMap();
+            
+            // Add legend
+            addMapLegend();
+            
+            // Add info panel
+            addInfoPanel();
             
             // Animation
             animate3D();
+            
+            // Mouse interaction
+            addMouseInteraction();
             
             // Handle resize
             window.addEventListener('resize', () => {
@@ -2692,106 +2831,403 @@
             });
         }
         
-        function createIndiaHeatmap() {
-            // Create a simplified grid to represent India
-            const geometry = new THREE.PlaneGeometry(40, 40, 20, 20);
-            const material = new THREE.MeshBasicMaterial({
-                vertexColors: true,
-                side: THREE.DoubleSide
-            });
+        // Regional data for Indian states
+        const regionData = {
+            'Maharashtra': { x: -12, z: 5, demand: 3200, growth: 38, production: 150, color: 0xff4444, evSales: 245000 },
+            'Gujarat': { x: -18, z: -5, demand: 2800, growth: 42, production: 50, color: 0xff5555, evSales: 185000 },
+            'Tamil Nadu': { x: 5, z: 18, demand: 2600, growth: 35, production: 80, color: 0xff6666, evSales: 210000 },
+            'Karnataka': { x: 0, z: 12, demand: 2200, growth: 45, production: 20, color: 0xff7777, evSales: 175000 },
+            'Delhi NCR': { x: -2, z: -12, demand: 2400, growth: 32, production: 0, color: 0xff8888, evSales: 195000 },
+            'Haryana': { x: -5, z: -10, demand: 1800, growth: 48, production: 0, color: 0xff9999, evSales: 125000 },
+            'Uttar Pradesh': { x: 2, z: -8, demand: 1600, growth: 52, production: 0, color: 0xffaaaa, evSales: 95000 },
+            'Telangana': { x: 3, z: 6, demand: 1400, growth: 40, production: 0, color: 0xffbbbb, evSales: 85000 },
+            'West Bengal': { x: 12, z: -3, demand: 1200, growth: 28, production: 0, color: 0xffcccc, evSales: 65000 },
+            'Rajasthan': { x: -10, z: -8, demand: 1000, growth: 35, production: 0, color: 0xffdddd, evSales: 55000 },
+            'Kerala': { x: 0, z: 22, demand: 800, growth: 30, production: 0, color: 0xffeeee, evSales: 45000 },
+            'Others': { x: 8, z: 0, demand: 1500, growth: 25, production: 0, color: 0xffffff, evSales: 75000 }
+        };
+        
+        let currentView = 'demand';
+        let selectedRegion = null;
+        
+        function createDetailedIndiaMap() {
+            // Create base map (stylized India outline)
+            const mapGroup = new THREE.Group();
             
-            // Create heatmap colors
-            const colors = [];
-            const color = new THREE.Color();
+            // Create hexagonal grid for better visualization
+            const hexRadius = 2;
+            const regions = Object.entries(regionData);
             
-            for (let i = 0; i < geometry.attributes.position.count; i++) {
-                const x = geometry.attributes.position.getX(i);
-                const y = geometry.attributes.position.getY(i);
+            regions.forEach(([name, data]) => {
+                // Create hexagonal region
+                const hexGeometry = new THREE.CylinderGeometry(hexRadius, hexRadius, 0.5, 6);
+                const hexMaterial = new THREE.MeshPhongMaterial({
+                    color: data.color,
+                    emissive: data.color,
+                    emissiveIntensity: 0.2,
+                    transparent: true,
+                    opacity: 0.8
+                });
                 
-                // Simple heatmap logic - higher intensity in certain regions
-                const intensity = Math.random() * 0.5 + 0.5;
+                const hexMesh = new THREE.Mesh(hexGeometry, hexMaterial);
+                hexMesh.position.set(data.x, 0, data.z);
+                hexMesh.castShadow = true;
+                hexMesh.receiveShadow = true;
+                hexMesh.userData = { name, data };
                 
-                if (Math.abs(x) < 10 && y > 0) { // North India
-                    color.setHSL(0.1, 1, intensity);
-                } else if (x > 10 && y < 0) { // South India
-                    color.setHSL(0.3, 1, intensity * 0.8);
-                } else if (x < -10) { // West India
-                    color.setHSL(0.6, 1, intensity * 0.9);
-                } else {
-                    color.setHSL(0.5, 0.5, intensity * 0.5);
-                }
+                // Create demand/production cylinder
+                const height = currentView === 'demand' ? data.demand / 200 : 
+                             currentView === 'production' ? data.production / 10 : 
+                             data.growth / 5;
                 
-                colors.push(color.r, color.g, color.b);
-            }
-            
-            geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-            
-            heatmapMesh = new THREE.Mesh(geometry, material);
-            heatmapMesh.rotation.x = -Math.PI / 2;
-            scene.add(heatmapMesh);
-            
-            // Add markers for major cities
-            const cities = [
-                { name: 'Mumbai', x: -10, z: 0, demand: 2500 },
-                { name: 'Delhi', x: 0, z: -10, demand: 2200 },
-                { name: 'Chennai', x: 12, z: 8, demand: 1800 },
-                { name: 'Bangalore', x: 8, z: 5, demand: 1600 },
-                { name: 'Gujarat', x: -15, z: -5, demand: 2000 }
-            ];
-            
-            cities.forEach(city => {
-                const markerGeometry = new THREE.CylinderGeometry(0.5, 2, city.demand / 500, 8);
-                const markerMaterial = new THREE.MeshPhongMaterial({
+                const barGeometry = new THREE.CylinderGeometry(1, 1.5, height, 8);
+                const barMaterial = new THREE.MeshPhongMaterial({
                     color: 0x667eea,
                     emissive: 0x667eea,
-                    emissiveIntensity: 0.5
+                    emissiveIntensity: 0.3,
+                    transparent: true,
+                    opacity: 0.9
                 });
-                const marker = new THREE.Mesh(markerGeometry, markerMaterial);
-                marker.position.set(city.x, city.demand / 500 / 2, city.z);
-                scene.add(marker);
+                
+                const barMesh = new THREE.Mesh(barGeometry, barMaterial);
+                barMesh.position.set(data.x, height / 2 + 0.5, data.z);
+                barMesh.castShadow = true;
+                barMesh.userData = { name, data };
+                
+                // Add text label
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                canvas.width = 256;
+                canvas.height = 128;
+                
+                context.fillStyle = 'rgba(0, 0, 0, 0.7)';
+                context.fillRect(0, 0, 256, 128);
+                
+                context.font = 'bold 24px Arial';
+                context.fillStyle = 'white';
+                context.textAlign = 'center';
+                context.fillText(name, 128, 40);
+                
+                context.font = '20px Arial';
+                context.fillText(`${data.demand} tons/yr`, 128, 70);
+                context.fillText(`+${data.growth}% YoY`, 128, 100);
+                
+                const texture = new THREE.CanvasTexture(canvas);
+                const spriteMaterial = new THREE.SpriteMaterial({ 
+                    map: texture,
+                    transparent: true,
+                    opacity: 0.9
+                });
+                const sprite = new THREE.Sprite(spriteMaterial);
+                sprite.scale.set(8, 4, 1);
+                sprite.position.set(data.x, height + 5, data.z);
+                
+                mapGroup.add(hexMesh);
+                mapGroup.add(barMesh);
+                mapGroup.add(sprite);
             });
+            
+            scene.add(mapGroup);
         }
+        
+        function addMapLegend() {
+            const legendHTML = `
+                <div style="position: absolute; bottom: 20px; left: 20px; background: rgba(0, 0, 0, 0.8); padding: 15px; border-radius: 10px; color: white; font-size: 12px;">
+                    <h4 style="margin: 0 0 10px 0; color: #667eea;">Regional NdFeB Demand</h4>
+                    <div style="margin-bottom: 8px;">
+                        <span style="display: inline-block; width: 20px; height: 10px; background: #ff4444; margin-right: 5px;"></span>
+                        High Demand (>2500 tons/yr)
+                    </div>
+                    <div style="margin-bottom: 8px;">
+                        <span style="display: inline-block; width: 20px; height: 10px; background: #ff8888; margin-right: 5px;"></span>
+                        Medium Demand (1500-2500 tons/yr)
+                    </div>
+                    <div style="margin-bottom: 8px;">
+                        <span style="display: inline-block; width: 20px; height: 10px; background: #ffcccc; margin-right: 5px;"></span>
+                        Low Demand (<1500 tons/yr)
+                    </div>
+                    <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #444;">
+                        <strong>Bar Height:</strong> <span id="legendMetric">Annual Demand</span>
+                    </div>
+                </div>
+            `;
+            
+            const legend = document.createElement('div');
+            legend.innerHTML = legendHTML;
+            document.getElementById('threejs-container').appendChild(legend);
+        }
+        
+        function addInfoPanel() {
+            const infoPanelHTML = `
+                <div id="regionInfoPanel" style="position: absolute; top: 20px; right: 20px; background: rgba(0, 0, 0, 0.9); padding: 20px; border-radius: 10px; color: white; font-size: 14px; min-width: 250px; display: none;">
+                    <h3 id="regionName" style="margin: 0 0 15px 0; color: #667eea;"></h3>
+                    <div style="display: grid; gap: 10px;">
+                        <div>
+                            <strong>Annual Demand:</strong>
+                            <span id="regionDemand" style="float: right;"></span>
+                        </div>
+                        <div>
+                            <strong>Growth Rate:</strong>
+                            <span id="regionGrowth" style="float: right; color: #4caf50;"></span>
+                        </div>
+                        <div>
+                            <strong>Production:</strong>
+                            <span id="regionProduction" style="float: right;"></span>
+                        </div>
+                        <div>
+                            <strong>EV Sales (2024):</strong>
+                            <span id="regionEVSales" style="float: right;"></span>
+                        </div>
+                        <div>
+                            <strong>Import Dependency:</strong>
+                            <span id="regionImport" style="float: right; color: #ff9800;"></span>
+                        </div>
+                        <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #444;">
+                            <strong>Key Customers:</strong>
+                            <div id="regionCustomers" style="font-size: 12px; margin-top: 5px;"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            const infoPanel = document.createElement('div');
+            infoPanel.innerHTML = infoPanelHTML;
+            document.getElementById('threejs-container').appendChild(infoPanel);
+        }
+        
+        function addMapControls() {
+            // Add zoom controls
+            const controlsHTML = `
+                <div style="position: absolute; top: 20px; left: 20px; display: flex; flex-direction: column; gap: 10px;">
+                    <button onclick="zoomMap(1.2)" style="width: 40px; height: 40px; border-radius: 50%; background: rgba(102, 126, 234, 0.8); border: none; color: white; font-size: 20px; cursor: pointer;">+</button>
+                    <button onclick="zoomMap(0.8)" style="width: 40px; height: 40px; border-radius: 50%; background: rgba(102, 126, 234, 0.8); border: none; color: white; font-size: 20px; cursor: pointer;">−</button>
+                    <button onclick="resetMapView()" style="width: 40px; height: 40px; border-radius: 50%; background: rgba(102, 126, 234, 0.8); border: none; color: white; font-size: 12px; cursor: pointer;">⟲</button>
+                </div>
+            `;
+            
+            const controls = document.createElement('div');
+            controls.innerHTML = controlsHTML;
+            document.getElementById('threejs-container').appendChild(controls);
+        }
+        
+        function addMouseInteraction() {
+            const raycaster = new THREE.Raycaster();
+            const mouse = new THREE.Vector2();
+            let tooltip = null;
+            
+            // Create floating tooltip
+            tooltip = document.createElement('div');
+            tooltip.style.cssText = `
+                position: absolute;
+                background: rgba(0, 0, 0, 0.95);
+                color: white;
+                padding: 12px 16px;
+                border-radius: 8px;
+                font-size: 14px;
+                pointer-events: none;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+                border: 1px solid rgba(102, 126, 234, 0.3);
+                max-width: 200px;
+                z-index: 1000;
+            `;
+            document.getElementById('threejs-container').appendChild(tooltip);
+            
+            function onMouseMove(event) {
+                const container = document.getElementById('threejs-container');
+                const rect = container.getBoundingClientRect();
+                
+                mouse.x = ((event.clientX - rect.left) / container.clientWidth) * 2 - 1;
+                mouse.y = -((event.clientY - rect.top) / container.clientHeight) * 2 + 1;
+                
+                raycaster.setFromCamera(mouse, camera);
+                const intersects = raycaster.intersectObjects(scene.children, true);
+                
+                if (intersects.length > 0) {
+                    const object = intersects[0].object;
+                    if (object.userData.name) {
+                        const data = object.userData.data;
+                        showRegionInfo(object.userData.name, data);
+                        
+                        // Update floating tooltip
+                        tooltip.innerHTML = `
+                            <strong style="color: #667eea;">${object.userData.name}</strong><br>
+                            <span style="font-size: 12px;">
+                                Demand: ${data.demand} tons/yr<br>
+                                Growth: +${data.growth}% YoY
+                            </span>
+                        `;
+                        tooltip.style.opacity = '1';
+                        tooltip.style.left = (event.clientX - rect.left + 20) + 'px';
+                        tooltip.style.top = (event.clientY - rect.top - 40) + 'px';
+                        
+                        container.style.cursor = 'pointer';
+                        
+                        // Highlight the region
+                        object.material.emissiveIntensity = 0.5;
+                    }
+                } else {
+                    hideRegionInfo();
+                    tooltip.style.opacity = '0';
+                    container.style.cursor = 'default';
+                    
+                    // Remove highlights
+                    scene.traverse((child) => {
+                        if (child.isMesh && child.material) {
+                            child.material.emissiveIntensity = 0.2;
+                        }
+                    });
+                }
+            }
+            
+            function onMouseClick(event) {
+                const container = document.getElementById('threejs-container');
+                const rect = container.getBoundingClientRect();
+                
+                mouse.x = ((event.clientX - rect.left) / container.clientWidth) * 2 - 1;
+                mouse.y = -((event.clientY - rect.top) / container.clientHeight) * 2 + 1;
+                
+                raycaster.setFromCamera(mouse, camera);
+                const intersects = raycaster.intersectObjects(scene.children, true);
+                
+                if (intersects.length > 0) {
+                    const object = intersects[0].object;
+                    if (object.userData.name) {
+                        // Animate camera to focus on selected region
+                        const targetPosition = new THREE.Vector3(
+                            object.position.x * 0.5,
+                            20,
+                            object.position.z * 0.5 + 30
+                        );
+                        
+                        animateCamera(targetPosition, object.position);
+                    }
+                }
+            }
+            
+            function animateCamera(targetPosition, lookAtPosition) {
+                const startPosition = camera.position.clone();
+                const duration = 1000;
+                const startTime = Date.now();
+                
+                function updateCamera() {
+                    const elapsed = Date.now() - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const easeProgress = 1 - Math.pow(1 - progress, 3); // Ease out cubic
+                    
+                    camera.position.lerpVectors(startPosition, targetPosition, easeProgress);
+                    camera.lookAt(lookAtPosition);
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(updateCamera);
+                    }
+                }
+                
+                updateCamera();
+            }
+            
+            document.getElementById('threejs-container').addEventListener('mousemove', onMouseMove);
+            document.getElementById('threejs-container').addEventListener('click', onMouseClick);
+        }
+        
+        function showRegionInfo(name, data) {
+            const panel = document.getElementById('regionInfoPanel');
+            panel.style.display = 'block';
+            
+            document.getElementById('regionName').textContent = name;
+            document.getElementById('regionDemand').textContent = data.demand + ' tons/year';
+            document.getElementById('regionGrowth').textContent = '+' + data.growth + '% YoY';
+            document.getElementById('regionProduction').textContent = data.production + ' tons/year';
+            document.getElementById('regionEVSales').textContent = data.evSales.toLocaleString() + ' units';
+            document.getElementById('regionImport').textContent = data.production > 0 ? 
+                Math.round((1 - data.production / data.demand) * 100) + '%' : '100%';
+            
+            // Add key customers based on region
+            const customers = {
+                'Maharashtra': 'Tata Motors, Mahindra, Volkswagen India',
+                'Gujarat': 'Maruti Suzuki, Ford India, Honda',
+                'Tamil Nadu': 'Hyundai, Renault-Nissan, BMW',
+                'Karnataka': 'Toyota, Volvo, Mercedes-Benz',
+                'Delhi NCR': 'Hero MotoCorp, Honda, Yamaha',
+                'Haryana': 'Maruti Suzuki, Honda, Hero',
+                'Others': 'Various OEMs and Tier-1 suppliers'
+            };
+            
+            document.getElementById('regionCustomers').textContent = customers[name] || customers['Others'];
+        }
+        
+        function hideRegionInfo() {
+            const panel = document.getElementById('regionInfoPanel');
+            if (panel) panel.style.display = 'none';
+        }
+        
+        window.zoomMap = function(factor) {
+            camera.position.multiplyScalar(1 / factor);
+            camera.updateProjectionMatrix();
+        };
+        
+        window.resetMapView = function() {
+            camera.position.set(0, 40, 60);
+            camera.lookAt(0, 0, 0);
+            scene.rotation.y = 0;
+        };
         
         function animate3D() {
             requestAnimationFrame(animate3D);
             
             if (scene && camera && renderer) {
-                // Rotate the heatmap slowly
-                if (heatmapMesh) {
-                    scene.rotation.y += 0.002;
-                }
+                // Gentle rotation
+                scene.rotation.y += 0.001;
+                
+                // Animate bars based on current view
+                scene.traverse((child) => {
+                    if (child.isMesh && child.geometry.type === 'CylinderGeometry') {
+                        child.position.y += Math.sin(Date.now() * 0.001 + child.position.x) * 0.01;
+                    }
+                });
                 
                 renderer.render(scene, camera);
             }
         }
         
         function toggleHeatmap(type) {
-            // Update heatmap based on type
-            if (!heatmapMesh) return;
+            currentView = type;
             
-            const geometry = heatmapMesh.geometry;
-            const colors = [];
-            const color = new THREE.Color();
-            
-            for (let i = 0; i < geometry.attributes.position.count; i++) {
-                let intensity = Math.random();
-                
-                switch(type) {
-                    case 'production':
-                        color.setHSL(0.3, 1, intensity * 0.7);
-                        break;
-                    case 'demand':
-                        color.setHSL(0.1, 1, intensity);
-                        break;
-                    case 'growth':
-                        color.setHSL(0.6, 1, intensity * 0.8);
-                        break;
-                }
-                
-                colors.push(color.r, color.g, color.b);
+            // Update legend
+            const legendMetric = document.getElementById('legendMetric');
+            if (legendMetric) {
+                legendMetric.textContent = type === 'production' ? 'Production Capacity' :
+                                         type === 'demand' ? 'Annual Demand' :
+                                         'Growth Rate';
             }
             
-            geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+            // Rebuild visualization with new data
+            scene.clear();
+            createDetailedIndiaMap();
+            
+            // Update visualization based on type
+            scene.traverse((child) => {
+                if (child.isMesh && child.userData.data) {
+                    const data = child.userData.data;
+                    
+                    if (child.geometry.type === 'CylinderGeometry' && child.geometry.parameters.radiusTop === 1) {
+                        // Update bar heights
+                        const newHeight = type === 'production' ? data.production / 10 :
+                                        type === 'demand' ? data.demand / 200 :
+                                        data.growth / 5;
+                        
+                        child.scale.y = newHeight / child.geometry.parameters.height;
+                        child.position.y = newHeight / 2 + 0.5;
+                    }
+                    
+                    // Update colors for production view
+                    if (type === 'production' && child.material) {
+                        child.material.color.setHex(data.production > 0 ? 0x4caf50 : 0xff9800);
+                        child.material.emissive.setHex(data.production > 0 ? 0x4caf50 : 0xff9800);
+                    }
+                }
+            });
         }
         
         // Update functions
